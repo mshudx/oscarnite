@@ -83,4 +83,5 @@ namespace Mshudx.OscarNite.Web.Models
         public DbSet<Question> Questions { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Option> Options { get; set; }
+    }
 }
