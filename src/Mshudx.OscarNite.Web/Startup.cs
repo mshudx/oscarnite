@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Mshudx.OscarNite.Web.Models;
 using Mshudx.OscarNite.Web.Services;
+using Mshudx.OscarNite.Web.Security;
+using Microsoft.AspNet.Http;
 
 namespace Mshudx.OscarNite.Web
 {
@@ -49,6 +51,12 @@ namespace Mshudx.OscarNite.Web
                 .AddSqlServer()
                 .AddDbContext<OscarNiteDbContext>(
                     options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddRoleStore<ApplicationRoleStore>()
+                .AddUserStore<ApplicationUserStore>()
+                .AddUserManager<ApplicationUserManager>()
+                .AddDefaultTokenProviders();
 
             services.AddMvc();
 
@@ -92,6 +100,8 @@ namespace Mshudx.OscarNite.Web
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
