@@ -47,8 +47,8 @@ namespace Mshudx.OscarNite.Web
 
             services.AddEntityFramework()
                 .AddSqlServer()
-                .AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+                .AddDbContext<OscarNiteDbContext>(
+                    options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
             services.AddMvc();
 
@@ -70,20 +70,21 @@ namespace Mshudx.OscarNite.Web
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-                {
-                    serviceScope
-                        .ServiceProvider
-                        .GetService<ApplicationDbContext>()
-                        .Database
-                        .Migrate();
-                }
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
 
                 // For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
+            }
+
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope
+                    .ServiceProvider
+                    .GetService<OscarNiteDbContext>()
+                    .Database
+                    .Migrate();
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
