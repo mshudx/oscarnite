@@ -1,13 +1,15 @@
 @model IEnumerable<Mshudx.OscarNite.Web.Models.Question>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Categories";
 }
 
-<h2>Index</h2>
-
+<h2>Categories</h2>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Index">Back to home</a>
+</p>
+<p>
+    <a asp-action="Create">Create a new category</a>
 </p>
 <table class="table">
     <tr>
@@ -24,7 +26,6 @@
         </td>
         <td>
             <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
             <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
         </td>
     </tr>

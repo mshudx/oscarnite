@@ -1,14 +1,17 @@
 @model Mshudx.OscarNite.Web.Models.Option
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create a movie";
 }
 
-<h2>Create</h2>
+<h2>Create a movice</h2>
+<p>
+    <a asp-action="Index">Back to home</a>
+</p>
 
 <form asp-action="Create">
     <div class="form-horizontal">
-        <h4>Option</h4>
+        <h4>Movie</h4>
         <hr />
         <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
         <div class="form-group">

@@ -54,7 +54,7 @@ namespace Mshudx.OscarNite.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Vote(VotingViewModel viewModel, string alias)
+        public async Task<IActionResult> Vote(VotingViewModel viewModel, string alias)
         {
             if (!ModelState.IsValid || viewModel.Questions.Any(q => String.IsNullOrEmpty(q.Voted)))
             {
@@ -106,7 +106,7 @@ namespace Mshudx.OscarNite.Web.Controllers
                         })
                     .ToList();
 
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             return View("ThanksForVoting");
         }

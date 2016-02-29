@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Reset results";
+}
+
+<h2>Reset results</h2>
+
+<h3>Are you sure you want to reset the results?</h3>
+<div>
+    <form asp-action="ResetConfirmed">
+        <div class="form-actions no-color">
+            <input type="submit" value="Reset" class="btn btn-default" /> |
+            <a asp-action="Index">Back to home</a>
+        </div>
+    </form>
+</div>
