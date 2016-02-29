@@ -1,24 +1,25 @@
-﻿@model VotingViewModel
+﻿@model AliasViewModel
 
-@{
-    List<SelectListItem> selectListItems = new List<SelectListItem>();
-    foreach (var option in Model.Options)
-    {
-        selectListItems.Add(new SelectListItem() { Text = option.Text, Value = option.Id });
-    }
-}
-@using (Html.BeginForm())
-{
-    <p>
-        Your Microsoft Alias:<br />
-        @Html.TextBox("voter")
-    </p>
-    foreach (var question in Model.Questions)
-    {
-        <p>
-            @question.Text<br />
-            @Html.DropDownList(question.Id, selectListItems)
-        </p>
-    }
-    <button type="submit">Vote!</button>
-}
+<div class="row">
+    <div class="col-md-8">
+        <section>
+            <form asp-controller="Home" asp-action="Index" method="post" class="form-horizontal" role="form">
+                <h4>Please enter your alias!</h4>
+                <hr />
+                <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" asp-for="Alias"></label>
+                    <div class="col-md-10">
+                        <input type="text" asp-for="Alias" />
+                        <span asp-validation-for="Alias" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

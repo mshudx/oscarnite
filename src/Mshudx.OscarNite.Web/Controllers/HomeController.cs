@@ -20,37 +20,92 @@ namespace Mshudx.OscarNite.Web.Controllers
 
         public IActionResult Index()
         {
-            VotingViewModel viewModel = new VotingViewModel();
-            viewModel.Questions = dbContext.Questions.ToList();
-            viewModel.Options = dbContext.Options.ToList();
-
-            return View(viewModel);
+            return View(new AliasViewModel());
         }
 
         [HttpPost]
-        public IActionResult Index(VotingViewModel viewModel)
+        public IActionResult Index(AliasViewModel model)
         {
-            Vote vote = new Vote();
-            vote.Id = Guid.NewGuid().ToString();
-            vote.Created = DateTimeOffset.Now;
-            vote.Voter = Request.Form["voter"];
-            vote.Answers = new List<Answer>();
-
-            // This collection is lazily loaded, force it to be downloaded locally
-            dbContext.Options.ToList();
-
-            foreach (var question in dbContext.Questions)
+            if (!ModelState.IsValid || String.IsNullOrEmpty(model.Alias) || model.Alias.Length < 5)
             {
-                Answer answer = new Answer();
-                answer.Id = Guid.NewGuid().ToString();
+                ModelState.AddModelError("alias", "Invalid alias!");
+                return View(model);
+            }
+            return RedirectToAction("Vote", new { alias = model.Alias });
+        }
 
-                answer.Vote = vote;
-                vote.Answers.Add(answer);
-                answer.Question = question;
-                answer.Option = dbContext.Options.Single(o => o.Id == Request.Form[question.Id]);
+        public IActionResult Vote(string alias)
+        {
+            VotingViewModel viewModel = new VotingViewModel();
+            viewModel.Options = dbContext.Options.ToList();
+
+            viewModel.Questions =
+                dbContext
+                    .Questions
+                    .Select(
+                        q => new QuestionVotingViewModel()
+                        {
+                            QuestionId = q.Id,
+                            Text = q.Text,
+                        })
+                    .ToList();
+            ViewData["alias"] = alias;
+            return View("Vote", viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Vote(VotingViewModel viewModel, string alias)
+        {
+            if (!ModelState.IsValid || viewModel.Questions.Any(q => String.IsNullOrEmpty(q.Voted)))
+            {
+                ViewData["alias"] = alias;
+
+                ModelState.AddModelError("", "Please vote in each category!");
+                viewModel.Options = dbContext.Options.ToList();
+
+                viewModel.Questions =
+                    dbContext
+                        .Questions
+                        .Select(
+                            q => new QuestionVotingViewModel()
+                            {
+                                QuestionId = q.Id,
+                                Text = q.Text,
+                                Voted = viewModel.Questions.Where(qo => qo.QuestionId == q.Id).Select(qo => qo.Voted).FirstOrDefault(),
+                            })
+                        .ToList();
+                return View(viewModel);
+            }
+            var vote = dbContext.Votes.SingleOrDefault(v => v.Voter.ToLowerInvariant() == alias.ToLowerInvariant());
+            if (vote == null)
+            {
+                vote = new Vote();
+                vote.Voter = alias;
+                vote.Id = Guid.NewGuid().ToString();
+                dbContext.Votes.Add(vote);
             }
 
-            dbContext.Votes.Add(vote);
+            var questions = dbContext.Questions.ToList();
+            var options = dbContext.Options.ToList();
+            vote.Created = DateTimeOffset.Now;
+            if (vote.Answers != null && vote.Answers.Any())
+            {
+                vote.Answers.ToList().ForEach(a => dbContext.Answers.Remove(a));
+                vote.Answers.Clear();
+            }
+            vote.Answers =
+                viewModel
+                    .Questions
+                    .Select(
+                        q => new Answer()
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            Question = questions.FirstOrDefault(qo => qo.Id == q.QuestionId),
+                            Vote = vote,
+                            Option = options.FirstOrDefault(oo => oo.Id == q.Voted),
+                        })
+                    .ToList();
+
             dbContext.SaveChanges();
 
             return View("ThanksForVoting");

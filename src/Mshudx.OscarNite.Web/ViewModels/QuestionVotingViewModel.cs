@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Mshudx.OscarNite.Web.ViewModels
 {
-    public class VotingViewModel
+    public class QuestionVotingViewModel
     {
-        public List<QuestionVotingViewModel> Questions { get; set; }
-        public List<Option> Options { get; set; }
-
+        public string QuestionId { get; set; }
+        public string Text { get; set; }
+        public string Voted { get; set; }
     }
 }
