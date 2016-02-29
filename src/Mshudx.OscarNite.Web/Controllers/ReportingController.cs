@@ -28,22 +28,28 @@ namespace Mshudx.OscarNite.Web.Controllers
             var questions = dbContext.Questions.ToList();
             var answers = dbContext.Answers.ToList();
             var options = dbContext.Options.ToList();
+            var votes = dbContext.Votes.ToList();
 
             // Assemble report object
-            var results = questions.Select(question =>
+            var results =
                 new
                 {
-                    questionText = question.Text,
-                    questionResults = options.Select(option => new
+                    totalVotes = votes.Count,
+                    questions = questions.Select(question =>
+                    new
                     {
-                        optionText = option.Text,
-                        optionCount = answers.Where(answer => answer.Question == question).Count(a => a.Option == option),
-                        optionPercent = answers.Where(a => a.Question == question).Count(a => a.Option == option) /
-                            answers.Where(a => a.Question == question).Count()
+                        questionText = question.Text,
+                        questionResults = options.Select(option => new
+                        {
+                            optionText = option.Text,
+                            optionCount = answers.Where(answer => answer.Question == question).Count(a => a.Option == option),
+                            optionPercent = answers.Where(a => a.Question == question).Count() > 0 ?
+                                string.Format("{0:0.00}%", (float)answers.Where(a => a.Question == question).Count(a => a.Option == option) / answers.Where(a => a.Question == question).Count() * 100) : "0%"
+                        })
                     })
-                });
+                };
 
-            ViewBag.Results = JsonConvert.SerializeObject(results, Formatting.Indented);
+            ViewBag.Results = JToken.FromObject(results);
 
             return View();
         }

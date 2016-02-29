@@ -1,4 +1,16 @@
-﻿<script type="text/javascript">
-    var results = @Html.Raw(ViewBag.Results);
-</script>
-You have to check the source right now, GUI based reporting coming soon
+﻿@using Newtonsoft.Json.Linq;
+@using System.Globalization;
+<h1>Reporting</h1>
+<p>
+    Total votes received: <b>@ViewBag.Results["totalVotes"]</b>
+</p>
+@foreach (JObject question in ViewBag.Results["questions"])
+{
+    <h2>@question["questionText"]</h2>
+    <ul>
+        @foreach (JObject questionResult in question["questionResults"])
+        {
+            <li>@questionResult["optionText"]: @questionResult["optionPercent"] (@questionResult["optionCount"] vote(s))</li>
+        }
+    </ul>
+}
