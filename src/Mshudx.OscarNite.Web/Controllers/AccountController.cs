@@ -6,6 +6,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Identity;
 using Mshudx.OscarNite.Web.Security;
 using Mshudx.OscarNite.Web.ViewModels.Account;
+using Microsoft.Extensions.OptionsModel;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,10 +16,12 @@ namespace Mshudx.OscarNite.Web.Controllers
     {
 
         private SignInManager<ApplicationUser> signInManager;
+        private IOptions<Security.PasswordOptions> passwordOptions;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, IOptions<Security.PasswordOptions> passwordOptions)
         {
             this.signInManager = signInManager;
+            this.passwordOptions = passwordOptions;
         }
 
         public async Task<IActionResult> Login()
@@ -33,12 +36,13 @@ namespace Mshudx.OscarNite.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                if (model.Code == "mshudx")
+                
+                if (model.Code == passwordOptions.Value.Admin)
                 {
                     await signInManager.SignInAsync(ApplicationUser.Admin, false);
                     return RedirectToAction("Index", "Admin");
                 }
-                if (model.Code == "oscarnite")
+                if (model.Code == passwordOptions.Value.Reporting)
                 {
                     await signInManager.SignInAsync(ApplicationUser.Report, false);
                     return RedirectToAction("Index", "Reporting");
