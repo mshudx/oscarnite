@@ -22,7 +22,7 @@ namespace Mshudx.OscarNite.Web.Controllers
         // GET: Questions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Questions.ToListAsync());
+            return View(await _context.Questions.OrderBy(q => q.Order).ToListAsync());
         }
 
         // GET: Questions/Details/5
@@ -45,7 +45,7 @@ namespace Mshudx.OscarNite.Web.Controllers
         // GET: Questions/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new Question() { Order = _context.Questions.Count() + 1 });
         }
 
         // POST: Questions/Create

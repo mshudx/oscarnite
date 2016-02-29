@@ -8,9 +8,10 @@ using Mshudx.OscarNite.Web.Models;
 namespace Mshudx.OscarNite.Web.Migrations
 {
     [DbContext(typeof(OscarNiteDbContext))]
-    partial class OscarNiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160229161856_questionorder")]
+    partial class questionorder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")

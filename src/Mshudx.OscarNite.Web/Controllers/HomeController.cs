@@ -37,11 +37,12 @@ namespace Mshudx.OscarNite.Web.Controllers
         public IActionResult Vote(string alias)
         {
             VotingViewModel viewModel = new VotingViewModel();
-            viewModel.Options = dbContext.Options.ToList();
+            viewModel.Options = dbContext.Options.OrderBy(o => o.Text).ToList();
 
             viewModel.Questions =
                 dbContext
                     .Questions
+                    .OrderBy(q => q.Order)
                     .Select(
                         q => new QuestionVotingViewModel()
                         {
@@ -61,11 +62,12 @@ namespace Mshudx.OscarNite.Web.Controllers
                 ViewData["alias"] = alias;
 
                 ModelState.AddModelError("", "Please vote in each category!");
-                viewModel.Options = dbContext.Options.ToList();
+                viewModel.Options = dbContext.Options.OrderBy(o => o.Text).ToList();
 
                 viewModel.Questions =
                     dbContext
                         .Questions
+                        .OrderBy(q => q.Order)
                         .Select(
                             q => new QuestionVotingViewModel()
                             {

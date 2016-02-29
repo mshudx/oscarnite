@@ -27,6 +27,10 @@ namespace Mshudx.OscarNite.Web.Models
                 .Property(q => q.Text)
                 .IsRequired();
 
+            builder.Entity<Question>()
+                .Property(q => q.Order)
+                .IsRequired();
+
             builder.Entity<Option>()
                 .Property(q => q.Text)
                 .IsRequired();

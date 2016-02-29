@@ -22,7 +22,7 @@ namespace Mshudx.OscarNite.Web.Controllers
         // GET: Options
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Options.ToListAsync());
+            return View(await _context.Options.OrderBy(o => o.Text).ToListAsync());
         }
 
         // GET: Options/Details/5

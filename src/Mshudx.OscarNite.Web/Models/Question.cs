@@ -9,5 +9,7 @@ namespace Mshudx.OscarNite.Web.Models
     {
         public virtual string Id { get; set; }
         public virtual string Text { get; set; }
+
+        public virtual int Order { get; set; }
     }
 }

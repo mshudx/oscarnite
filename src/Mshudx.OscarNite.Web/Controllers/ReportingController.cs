@@ -35,17 +35,19 @@ namespace Mshudx.OscarNite.Web.Controllers
                 new
                 {
                     totalVotes = votes.Count,
-                    questions = questions.Select(question =>
+                    questions = questions.OrderBy(q => q.Order).Select(question =>
                     new
                     {
                         questionText = question.Text,
-                        questionResults = options.Select(option => new
-                        {
-                            optionText = option.Text,
-                            optionCount = answers.Where(answer => answer.Question == question).Count(a => a.Option == option),
-                            optionPercent = answers.Where(a => a.Question == question).Count() > 0 ?
-                                string.Format("{0:0.00}%", (float)answers.Where(a => a.Question == question).Count(a => a.Option == option) / answers.Where(a => a.Question == question).Count() * 100) : "0%"
-                        })
+                        questionResults = options
+                            .Select(option => new
+                            {
+                                optionText = option.Text,
+                                optionCount = answers.Where(answer => answer.Question == question).Count(a => a.Option == option),
+                                optionPercent = answers.Where(a => a.Question == question).Count() > 0 ?
+                                    string.Format("{0:0.00}%", (float)answers.Where(a => a.Question == question).Count(a => a.Option == option) / answers.Where(a => a.Question == question).Count() * 100) : "0%"
+                            })
+                            .OrderByDescending(r => r.optionCount),
                     })
                 };
 
