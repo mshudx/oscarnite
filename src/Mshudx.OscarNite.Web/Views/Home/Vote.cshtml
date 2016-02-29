@@ -27,7 +27,7 @@
 
                             }
                             <input type="hidden" asp-for="Questions[i].QuestionId" />
-                            <select asp-for="Questions[i].Voted" asp-items="@selectList"></select>
+                            <select class="form-control" asp-for="Questions[i].Voted" asp-items="@selectList"></select>
                             <span asp-validation-for="Questions[i].Voted" class="text-danger"></span>
                         </div>
                     </div>

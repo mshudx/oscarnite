@@ -18,7 +18,9 @@
         @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
     </head>
     <body>
-        @RenderBody()
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
         <environment names="Development">
             <script src="~/lib/jquery/dist/jquery.js"></script>
             <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
