@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace Mshudx.OscarNite.Web.Controllers
 {
-    //[Authorize(Roles = "Admin,Report")]
+    [Authorize(Roles = "Admin,Report")]
     public class ReportingController : Controller
     {
         OscarNiteDbContext dbContext;

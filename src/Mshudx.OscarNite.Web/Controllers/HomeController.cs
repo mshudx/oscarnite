@@ -82,17 +82,14 @@ namespace Mshudx.OscarNite.Web.Controllers
                 vote = new Vote();
                 vote.Voter = alias;
                 vote.Id = Guid.NewGuid().ToString();
+                vote.Answers = new List<Answer>();
                 dbContext.Votes.Add(vote);
             }
 
             var questions = dbContext.Questions.ToList();
             var options = dbContext.Options.ToList();
+            dbContext.Answers.RemoveRange(dbContext.Answers.Where(a => a.Vote.Id == vote.Id));
             vote.Created = DateTimeOffset.Now;
-            if (vote.Answers != null && vote.Answers.Any())
-            {
-                vote.Answers.ToList().ForEach(a => dbContext.Answers.Remove(a));
-                vote.Answers.Clear();
-            }
             vote.Answers =
                 viewModel
                     .Questions
