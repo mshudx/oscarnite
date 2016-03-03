@@ -4,7 +4,7 @@
 @section styles {
     <link href="~/css/visuals.min.css" rel="stylesheet" />
     <style>
-        #visual {
+        .visualreport {
             background-color: white;
             padding: 10px;
             margin: 5px;
@@ -155,7 +155,7 @@
     @foreach (JObject question in ViewBag.Results["questions"])
     {
         <h2>@question["questionText"]</h2>
-        <div id="@String.Format("visual{0}", i++)"></div>
+        <div id="@String.Format("visual{0}", i++)" class="visualreport"></div>
 
     }
 </div>
