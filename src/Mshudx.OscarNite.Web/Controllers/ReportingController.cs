@@ -24,36 +24,43 @@ namespace Mshudx.OscarNite.Web.Controllers
 
         public IActionResult Index()
         {
-            // Force relevant tables to be cached into local memory for speed
-            var questions = dbContext.Questions.ToList();
-            var answers = dbContext.Answers.ToList();
-            var options = dbContext.Options.ToList();
-            var votes = dbContext.Votes.ToList();
-
-            // Assemble report object
-            var results =
-                new
-                {
-                    totalVotes = votes.Count,
-                    questions = questions.OrderBy(q => q.Order).Select(question =>
-                    new
-                    {
-                        questionText = question.Text,
-                        questionResults = options
-                            .Select(option => new
-                            {
-                                optionText = option.Text,
-                                optionCount = answers.Where(answer => answer.Question == question).Count(a => a.Option == option),
-                                optionPercent = answers.Where(a => a.Question == question).Count() > 0 ?
-                                    string.Format("{0:0.00}%", (float)answers.Where(a => a.Question == question).Count(a => a.Option == option) / answers.Where(a => a.Question == question).Count() * 100) : "0%"
-                            })
-                            .OrderByDescending(r => r.optionCount),
-                    })
-                };
-
-            ViewBag.Results = JToken.FromObject(results);
+            var question = dbContext.Questions.First();
+            var votes = dbContext.Votes.Count();
+            ViewData["totalVotes"] = votes;
+            ViewData["questionId"] = question.Id;
 
             return View();
+        }
+
+        public IActionResult Results(string id)
+        {
+            // Force relevant tables to be cached into local memory for speed
+            var questions = dbContext.Questions.OrderBy(q => q.Order).ThenBy(q => q.Id).ToList().SkipWhile(q => q.Id != id).Take(2);
+            var answers = dbContext.Answers.Where(a => a.Question.Id == id).ToList();
+            var options = dbContext.Options.ToList();
+            var question = questions.First();
+            var next = questions.Skip(1).FirstOrDefault();
+            var result =
+                new ResultViewModel
+                {
+                    QuestionText = question.Text,
+                    QuestionResults = options
+                        .Select(option => new ResultDataViewModel
+                        {
+                            OptionText = option.Text,
+                            OptionCount = answers.Where(answer => answer.Question == question).Count(a => a.Option == option),
+                            OptionPercent = answers.Where(a => a.Question == question).Count() > 0 ?
+                                string.Format("{0:0.00}%", (float)answers.Where(a => a.Question == question).Count(a => a.Option == option) / answers.Where(a => a.Question == question).Count() * 100) : "0%"
+                        })
+                        .OrderByDescending(r => r.OptionCount)
+                        .ToList(),
+                    Next = next?.Id,
+                };
+            var moviesData = String.Join(",", result.QuestionResults.Select(r => String.Format("'{1} - {0}'", r.OptionText, r.OptionCount)));
+            var votesData = String.Join(",", result.QuestionResults.Select(r => r.OptionCount));
+            ViewData["moviesData"] = moviesData;
+            ViewData["votesData"] = votesData;
+            return View("Results", result);
         }
     }
 }

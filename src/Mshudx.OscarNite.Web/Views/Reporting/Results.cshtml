@@ -1,0 +1,71 @@
+﻿@model ResultViewModel
+
+@section styles {
+    <link href="~/css/visuals.min.css" rel="stylesheet" />
+}
+
+@{
+    var moviesData = ViewData["moviesData"];// String.Join(",", Model.QuestionResults.Select(r => String.Format("'{1} - {0}'", r.OptionText, r.OptionCount))).ToList();
+    var votesData = ViewData["votesData"]; //String.Join(",", Model.QuestionResults.Select(r => r.OptionCount));
+}
+@section scripts {
+    <script src="~/lib/powerbi-visuals.all.min.js"></script>
+    <script src="~/pivoting/pivoting.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var dataView = createDataView([@Html.Raw(moviesData)], [@Html.Raw(votesData)]);
+            var visual = createVisual(function () { return dataView; }, $('#visual'));
+            $(window).resize(function () {
+                var container = $('#visualcontainer');
+                visual.onResizing({ height: container.height(), width: container.width() });
+            });
+            $(window).resize();
+        });
+    </script>
+}
+<div class="panel">
+    <div class="panel-heading">
+        <div class="bg-info text-center">@Model.QuestionText</div>
+
+    </div>
+    <div class="panel-body">
+        <div id="visualcontainer">
+            <div id="visual" class="visualreport"></div>
+        </div>
+    </div>
+</div>
+<div class="panel">
+    <div class="panel-body table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Movie</th>
+                    <th>Votes</th>
+                    <th>Percent</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int pos = 1; int prev = Model.QuestionResults.Max(q => q.OptionCount); }
+                @foreach (var result in Model.QuestionResults)
+                {
+                    if (prev != result.OptionCount)
+                    {
+                        prev = result.OptionCount;
+                        pos++;
+                    }
+                    <tr class="@(result.OptionCount == Model.QuestionResults.Max(q => q.OptionCount) ? "success" : null)">
+                        <td>@pos</td>
+                        <td>@result.OptionText</td>
+                        <td>@result.OptionCount</td>
+                        <td>@result.OptionPercent</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@if (!String.IsNullOrEmpty(Model.Next))
+{
+    <a class="btn btn-primary" asp-action="Results" asp-route-id="@Model.Next" role="button">Next</a>
+}
