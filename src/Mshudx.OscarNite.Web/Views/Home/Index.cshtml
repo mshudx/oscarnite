@@ -1,15 +1,13 @@
 ﻿<div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">Welcome to OscarNite! What would you like to do today?</h3>
+        <h3 class="panel-title"><span>Welcome to the Movie Contest!</span><br /><span>What do you want to do?</span> </h3>
     </div>
     <div class="panel-body">
-        <div class="row">
-            <div class="col-md-2">
-                <a class="btn btn-primary" asp-action="Alias"><span class="glyphicon glyphicon-bishop"></span>Vote</a>
-            </div>
-            <div class="col-md-2">
-                <a class="btn btn-warning" asp-action="Index" asp-controller="Admin"><span class="glyphicon glyphicon-cloud"></span>Manage</a>
-            </div>
-        </div>
+        <p class="bg-success on-button">
+            <a class="btn btn-success text-center" asp-action="Alias">Vote!</a>
+        </p>
+        <p class="bg-warning on-button">
+            <a class="btn btn-warning text-center" asp-action="Index" asp-controller="Admin">Manage the contest</a>
+        </p>
     </div>
 </div>

@@ -19,9 +19,17 @@
         @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container-fluid content">
+            <div class="page-header">
+                <h1>CEE Finance <img src="~/images/fullsizelogo.jpg" class="img-responsive img-rounded pull-right" style="height: 40px" /></h1>
+            </div>
             @RenderBody()
         </div>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted text-center"><span class="glyphicon glyphicon-copyright-mark"></span> Microsoft Hungary, 2016</p>
+            </div>
+        </footer>
         <environment names="Development">
             <script src="~/lib/jquery/dist/jquery.js"></script>
             <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

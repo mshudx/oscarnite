@@ -1,25 +1,15 @@
 ﻿@model AliasViewModel
 
-<div class="row">
-    <div class="col-md-8">
-        <section>
-            <form asp-controller="Home" asp-action="Index" method="post" class="form-horizontal" role="form">
-                <h4>Please enter your alias!</h4>
-                <hr />
-                <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
-                <div class="form-group">
-                    <label class="col-md-2 control-label" asp-for="Alias"></label>
-                    <div class="col-md-10">
-                        <input type="text" asp-for="Alias" />
-                        <span asp-validation-for="Alias" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </div>
-                </div>
-            </form>
-        </section>
-    </div>
-</div>
+<section>
+    <form asp-controller="Home" asp-action="Index" method="post" role="form">
+        <h4>Enter your alias then clik/tap Next!</h4>
+        <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
+        <div class="form-group">
+            <input type="text" class="form-control" asp-for="Alias" />
+            <span asp-validation-for="Alias" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success pull-right">Next</button>
+        </div>
+    </form>
+</section>

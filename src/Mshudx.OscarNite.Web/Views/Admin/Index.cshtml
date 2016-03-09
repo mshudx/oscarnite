@@ -2,14 +2,16 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Administration</h2>
+<div class="panel">
+    <div class="panel-heading">
+        What would you like to manage?
+    </div>
+    <div class="panel-body">
         <ul>
-            <li><a asp-action="Index" asp-controller="Questions">Manage categories</a></li>
-            <li><a asp-action="Index" asp-controller="Options">Manage movies</a></li>
-            <li><a asp-action="Index" asp-controller="Reporting">View reports</a></li>
-            <li><a asp-action="Reset">Reset results</a></li>
+            <li><a asp-action="Index" asp-controller="Questions">Categories</a></li>
+            <li><a asp-action="Index" asp-controller="Options">Movies</a></li>
+            <li><a asp-action="Index" asp-controller="Reporting">Results</a></li>
+            <li><a asp-action="Reset">Reset contest</a></li>
         </ul>
     </div>
 </div>

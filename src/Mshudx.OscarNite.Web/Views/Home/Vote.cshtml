@@ -1,44 +1,35 @@
 ﻿@model VotingViewModel
 
-<div class="row">
-    <div class="col-md-8">
-        <section>
-            <form asp-controller="Home" asp-action="Vote" asp-route-alias="@ViewData["alias"]" method="post" class="form-horizontal" role="form">
-                <h4>Please vote in each category!</h4>
-                <hr />
-                <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
-                @for (var i = 0; i<Model.Questions.Count; i ++)
-                {
-                    <div class="form-group">
-                        <label class="col-md-2 control-label">@Model.Questions[i].Text</label>
-                        <div class="col-md-10">
-                            @{
-                                var selectList =
-                                    new[] { new SelectListItem() { Text = "", Value = "", Selected = String.IsNullOrEmpty(Model.Questions[i].Voted) || !Model.Options.Any(o => o.Id == Model.Questions[i].Voted) } }
-                                    .Concat(
-                                        Model.Options.Select(
-                                            o => new SelectListItem()
-                                            {
-                                                Text = o.Text,
-                                                Value = o.Id,
-                                                Selected = !String.IsNullOrEmpty(Model.Questions[i].Voted) && o.Id == Model.Questions[i].Voted
-                                            })
-                                    );
+<section>
+    <form asp-controller="Home" asp-action="Vote" asp-route-alias="@ViewData["alias"]" method="post" role="form">
+        <h4>In each category select your favourite film then click/tap Vote.</h4>
+        <hr />
+        <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
+        @for (var i = 0; i < Model.Questions.Count; i++)
+        {
+            <div class="form-group">
+                <label class="control-label">@Model.Questions[i].Text</label>
+                @{
+                    var selectList =
+                        new[] { new SelectListItem() { Text = "", Value = "", Selected = String.IsNullOrEmpty(Model.Questions[i].Voted) || !Model.Options.Any(o => o.Id == Model.Questions[i].Voted) } }
+                        .Concat(
+                            Model.Options.Select(
+                                o => new SelectListItem()
+                                {
+                                    Text = o.Text,
+                                    Value = o.Id,
+                                    Selected = !String.IsNullOrEmpty(Model.Questions[i].Voted) && o.Id == Model.Questions[i].Voted
+                                })
+                        );
 
-                            }
-                            <input type="hidden" asp-for="Questions[i].QuestionId" />
-                            <select class="form-control" asp-for="Questions[i].Voted" asp-items="@selectList"></select>
-                            <span asp-validation-for="Questions[i].Voted" class="text-danger"></span>
-                        </div>
-                    </div>
                 }
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </div>
-                </div>
-            </form>
-
-        </section>
-    </div>
-</div>
+                <input type="hidden" asp-for="Questions[i].QuestionId" />
+                <select class="form-control" asp-for="Questions[i].Voted" asp-items="@selectList"></select>
+                <span asp-validation-for="Questions[i].Voted" class="text-danger"></span>
+            </div>
+                    }
+        <div class="form-group">
+            <button type="submit" class="btn btn-success pull-right">Submit</button>
+        </div>
+    </form>
+</section>
