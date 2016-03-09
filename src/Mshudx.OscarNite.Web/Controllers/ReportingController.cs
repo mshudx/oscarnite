@@ -24,7 +24,7 @@ namespace Mshudx.OscarNite.Web.Controllers
 
         public IActionResult Index()
         {
-            var question = dbContext.Questions.First();
+            var question = dbContext.Questions.OrderBy(q => q.Order).ThenBy(q => q.Id).First();
             var votes = dbContext.Votes.Count();
             ViewData["totalVotes"] = votes;
             ViewData["questionId"] = question.Id;
