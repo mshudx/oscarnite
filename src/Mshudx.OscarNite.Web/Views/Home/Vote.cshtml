@@ -2,7 +2,7 @@
 
 <section>
     <form asp-controller="Home" asp-action="Vote" asp-route-alias="@ViewData["alias"]" method="post" role="form">
-        <h4>In each category select your favourite film then click/tap Vote.</h4>
+        <h4>In each category, select your favourite film then click/tap Vote.</h4>
         <hr />
         <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
         @for (var i = 0; i < Model.Questions.Count; i++)

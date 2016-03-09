@@ -18,35 +18,37 @@
         @RenderSection("styles", required: false)
         @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
     </head>
-    <body>
-        <div class="container-fluid content">
-            <div class="page-header">
+<body>
+    <div class="container-fluid content">
+        <div class="page-header">
+            <a asp-action="Index" asp-controller="Home" style="text-decoration: none;  color: black;">
                 <h1>CEE Finance <img src="~/images/fullsizelogo.jpg" class="img-responsive img-rounded pull-right" style="height: 40px" /></h1>
-            </div>
-            @RenderBody()
+            </a>
         </div>
-        <footer class="footer">
-            <div class="container">
-                <p class="text-muted text-center"><span class="glyphicon glyphicon-copyright-mark"></span> Microsoft Hungary, 2016</p>
-            </div>
-        </footer>
-        <environment names="Development">
-            <script src="~/lib/jquery/dist/jquery.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-            <script src="~/js/site.js" asp-append-version="true"></script>
-        </environment>
-        <environment names="Staging,Production">
-            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
-                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                    asp-fallback-test="window.jQuery">
-            </script>
-            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/bootstrap.min.js"
-                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-            </script>
-            <script src="~/js/site.min.js" asp-append-version="true"></script>
-        </environment>
+        @RenderBody()
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted text-center"><span class="glyphicon glyphicon-copyright-mark"></span> Microsoft Hungary, 2016</p>
+        </div>
+    </footer>
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
 
-        @RenderSection("scripts", required: false)
-    </body>
+    @RenderSection("scripts", required: false)
+</body>
 </html>
